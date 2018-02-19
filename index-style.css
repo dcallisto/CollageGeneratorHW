@@ -1,0 +1,60 @@
+/*
+  index-style.css
+  Team 5
+  Version 1.0
+ */
+
+body {
+	background-color: #E3E3E3; /* light gray color */
+}
+
+input#topicInput {
+	/* adds border to input box */
+	border-style: solid;
+	border-color: #777777;
+	border-width: 3px;
+	
+	height: 35px;
+	width: 200px;
+	
+	padding-left: 5px;
+	margin-left: 140px; /* centers the box */
+}
+
+input#topicInput::placeholder {
+	color: #AAAAAA; /* light gray color */
+}
+
+input#topicSubmit {
+	height: 42px;
+	width: 130px;
+	
+	background-color: #777777; /* dark gray background color */
+	color: white;
+	
+	margin-left: 10px;
+	
+	cursor: pointer;
+}
+
+input#topicSubmit:disabled {
+	opacity: 0.5; /* faded out button when disabled */
+	cursor: default;
+}
+
+html, body, div#container {
+	height: 100%;
+	margin: 0;
+}
+
+div#container {
+	/* centers the form elements horizontally and veritcally */
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+
+form#topicForm {
+	margin: 0;
+}
