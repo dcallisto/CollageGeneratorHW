@@ -3,8 +3,10 @@ package gimages;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -262,7 +264,13 @@ public class GoogleImagesClient
 		List<String> urlParamsList = new ArrayList<>();
 		// build into string
 		for (String parameter : queryParameters.keySet()) {
-			urlParamsList.add(String.format("%s=%s", parameter, queryParameters.get(parameter)));
+			try {
+				urlParamsList.add(
+				        String.format("%s=%s", parameter, URLEncoder.encode(queryParameters.get(parameter), "UTF-8")));
+			}
+			catch (UnsupportedEncodingException uee) {
+				uee.printStackTrace();
+			}
 		}
 		return String.join("&", urlParamsList);
 	}
