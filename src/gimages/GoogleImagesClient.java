@@ -37,6 +37,8 @@ public class GoogleImagesClient
 
 	protected static class NoCseIdException extends Exception
 	{
+		private static final long serialVersionUID = -3173644237979556821L;
+
 		NoCseIdException(String msg)
 		{
 			super(msg);
@@ -45,6 +47,8 @@ public class GoogleImagesClient
 
 	protected static class NoApiKeyException extends Exception
 	{
+		private static final long serialVersionUID = 2618088795834573589L;
+
 		NoApiKeyException(String msg)
 		{
 			super(msg);
@@ -53,6 +57,8 @@ public class GoogleImagesClient
 
 	protected static class EmptyQueryException extends Exception
 	{
+		private static final long serialVersionUID = -5086294946483449728L;
+
 		EmptyQueryException(String msg)
 		{
 			super(msg);
@@ -61,6 +67,8 @@ public class GoogleImagesClient
 
 	protected static class InsufficientImageItemsException extends RuntimeException
 	{
+		private static final long serialVersionUID = 687842118573385020L;
+
 		public InsufficientImageItemsException(String msg)
 		{
 			super(msg);
@@ -69,6 +77,8 @@ public class GoogleImagesClient
 
 	protected static class SearchFailureException extends RuntimeException
 	{
+		private static final long serialVersionUID = -8159817905625855197L;
+
 		public SearchFailureException(String msg)
 		{
 			super(msg);
@@ -232,12 +242,12 @@ public class GoogleImagesClient
 			ioe.printStackTrace();
 		}
 		finally {
+			// close the connection
 			if (conn != null) {
 				conn.disconnect();
 			}
 		}
 
-		// FIXME
 		return jsonResponse;
 	}
 

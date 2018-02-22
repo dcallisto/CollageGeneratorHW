@@ -5,7 +5,6 @@ import java.util.Collection;
 import gimages.GoogleImagesClient.EmptyQueryException;
 import gimages.GoogleImagesClient.NoApiKeyException;
 import gimages.GoogleImagesClient.NoCseIdException;
-import gimages.GoogleImagesSearchOptions.GoogleImagesSearchOptionsBuilder;
 
 public class UsageExample
 {
@@ -32,6 +31,5 @@ public class UsageExample
 		catch (EmptyQueryException eqe) {
 			eqe.printStackTrace();
 		}
-
 	}
 }
