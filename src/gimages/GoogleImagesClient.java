@@ -35,7 +35,7 @@ public class GoogleImagesClient
 	private String cseId;
 	private String apiKey;
 
-	protected static class NoCseIdException extends Exception
+	protected static class NoCseIdException extends RuntimeException
 	{
 		private static final long serialVersionUID = -3173644237979556821L;
 
@@ -45,7 +45,7 @@ public class GoogleImagesClient
 		}
 	}
 
-	protected static class NoApiKeyException extends Exception
+	protected static class NoApiKeyException extends RuntimeException
 	{
 		private static final long serialVersionUID = 2618088795834573589L;
 
@@ -55,7 +55,7 @@ public class GoogleImagesClient
 		}
 	}
 
-	protected static class EmptyQueryException extends Exception
+	protected static class EmptyQueryException extends RuntimeException
 	{
 		private static final long serialVersionUID = -5086294946483449728L;
 
@@ -85,7 +85,7 @@ public class GoogleImagesClient
 		}
 	}
 
-	public GoogleImagesClient(String cseId, String apiKey) throws NoCseIdException, NoApiKeyException
+	public GoogleImagesClient(String cseId, String apiKey)
 	{
 		// XXX
 		cseId = "015959703164177076712:ybjv_gscpea";
@@ -104,14 +104,13 @@ public class GoogleImagesClient
 	}
 
 	public Collection<GoogleImageDataContainer> getFirstNImages (String query, final Integer n)
-	        throws EmptyQueryException, InsufficientImageItemsException
 	{
 		GoogleImagesSearchOptions options = new GoogleImagesSearchOptionsBuilder().build();
 		return getFirstNImages(query, n, options);
 	}
 
 	public Collection<GoogleImageDataContainer> getFirstNImages (String query, final Integer n,
-	        GoogleImagesSearchOptions options) throws EmptyQueryException, InsufficientImageItemsException
+	        GoogleImagesSearchOptions options)
 	{
 		assert (n > 0);
 		JsonObject searchResponse = searchImages(query, options);
@@ -204,7 +203,7 @@ public class GoogleImagesClient
 		return imageDataContainers;
 	}
 
-	private JsonObject searchImages (String query, GoogleImagesSearchOptions options) throws EmptyQueryException
+	private JsonObject searchImages (String query, GoogleImagesSearchOptions options)
 	{
 		if (query == null || query.isEmpty()) {
 			throw new EmptyQueryException("Expected a query.");
