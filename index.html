@@ -1,0 +1,43 @@
+<!-- 
+  index.html
+  Team 5
+  Version 1.0
+ -->
+<!DOCTYPE html>
+	<html>
+		<head>
+			<link rel="stylesheet" type="text/css" href="css/index-style.css" />			
+			<title>Collage Builder</title>
+			
+			<script>
+				// Enables and disables the button depending on whether text is entered
+				function enableButton() {
+					
+					if (document.topicForm.topicInput.value.length > 0) {
+						document.topicForm.submitButton.disabled = false;
+					}
+					else {
+						document.topicForm.submitButton.disabled = true;	
+					}
+				}
+				function buttonSubmit() {
+					//Send search term to Initial Search servlet
+					console.log("In JS function");
+					var searchTerm = document.getElementById("topicInput").value;
+					console.log("search term" + searchTerm);
+					var request = new XMLHttpRequest();
+				}
+			</script>
+		</head>
+	<body>
+		<div id="container">
+		
+			<!--  The form that contains the two input elements -->
+			<form name="topicForm" id="topicForm" method="POST" action="InitialSearch" method="post">
+				<input type="text" name="topicInput" id="topicInput" placeholder="Enter topic" onkeyup="enableButton();">
+				<input type="submit" name="submitButton" id="topicSubmit" value="Generate Collage" disabled >
+			<!-- 	onclick="buttonSubmit();" -->
+			</form>	
+		</div>
+	</body>
+</html>
