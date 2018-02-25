@@ -1,5 +1,7 @@
 package collageTools;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
 import java.io.File;
@@ -16,6 +18,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 
 import org.imgscalr.AsyncScalr;
 import org.imgscalr.Main;
@@ -64,6 +71,15 @@ public class ImageTools {
 	}
 	
 	public Collection<BufferedImage> addBorder(Collection<BufferedImage> collection){
+		JPanel gui = new JPanel(new BorderLayout());
+        // to contrast the 'picture frame' border created below
+        gui.setBorder(new LineBorder(Color.WHITE, 8));
+        for(BufferedImage bi: collection) {
+	        JLabel l = new JLabel(new ImageIcon(bi));
+	        Border b = new LineBorder(Color.WHITE, 8);
+	        l.setBorder(b);
+	        gui.add(l);
+        }
 		return collection;
 	}
 	
