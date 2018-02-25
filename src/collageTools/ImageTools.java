@@ -43,4 +43,16 @@ public class ImageTools {
 			Scalr.rotate(bi, Rotation.valueOf(Double.toString(Math.random()*90-45)), (BufferedImageOp[])null);
 		return collection;
 	}
+	
+	public Collection<BufferedImage> translateImages(Collection<BufferedImage> collection){
+		return collection;
+	}
+	
+	public Collection<BufferedImage> addBorder(Collection<BufferedImage> collection){
+		return collection;
+	}
+	
+	public BufferedImage compileCollage(Collection<BufferedImage> collection) {
+		return new BufferedImage(0, 0, 0);
+	}
 }
