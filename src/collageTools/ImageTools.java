@@ -26,6 +26,13 @@ import gimages.GoogleImageDataContainer;
 
 public class ImageTools {
 	
+	int width;
+	int height;
+	
+	public ImageTools(int width, int height) {
+		this.width = width;
+		this.height = height;
+	}
 	
 	public Collection<BufferedImage> convertToBufferedImageFromGoogleImageDataContainer(Collection<GoogleImageDataContainer> collection){
 		Collection<BufferedImage> results = new ArrayList<BufferedImage>();
@@ -44,7 +51,15 @@ public class ImageTools {
 		return collection;
 	}
 	
+	public Collection<BufferedImage> resizeImages(Collection<BufferedImage> collection){
+		for(BufferedImage bi: collection)
+			Scalr.resize(bi, width, height, (BufferedImageOp[])null);
+		return collection;
+	}
+	
 	public Collection<BufferedImage> translateImages(Collection<BufferedImage> collection){
+		for(BufferedImage bi: collection)
+			Scalr.apply(bi, (BufferedImageOp[])null);
 		return collection;
 	}
 	
