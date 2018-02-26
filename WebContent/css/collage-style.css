@@ -1,0 +1,55 @@
+/*
+  collage-style.css
+  Team 5
+  Version 1.0
+ */
+
+body {
+	background-color: white;
+}
+
+html, body, div#container {
+	height: 100%;
+	margin: 0;
+}
+
+div#container {
+	/* centers the form elements horizontally and veritcally */
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+#collageTitle {
+  float: top;
+  color: black;
+  font-size: 24px;
+}
+
+#collageSpace {
+  width: 60%;
+  min-width: 800px;
+  height: 40%;
+  min-height: 600px;
+  background-color: gray;
+}
+
+#topicForm {
+  padding-top: 30px;
+}
+
+#topicForm #anotherTopicInput {
+  outline-color: #404040; /* dark grey */
+  color: #a9a9a9;
+}
+
+#topicForm #anotherTopicSubmit {
+  background-color: #404040; /* dark grey */
+  color: white;
+}
+
+#exportCollage {
+  background-color: #404040;
+  color: white;
+}

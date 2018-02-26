@@ -1,0 +1,29 @@
+<!--
+  collage.html
+  Team 5
+  Version 1.0
+ -->
+<!DOCTYPE html>
+	<html>
+		<head>
+			<link rel="stylesheet" type="text/css" href="./css/collage-style.css" />
+			<title>Collage Builder</title>
+		</head>
+	<body>
+		<div id="container">
+      <h1 id="collageTitle"> Collage for Topic </h1>
+			<!--  collage space -->
+			<div id="collageSpace">
+        <!-- css related properties give it appropriate size -->
+      </div>
+      <!--  The form that contains the two input elements -->
+			<form name="topicForm" id="topicForm" method="POST" action="">
+				<input type="text" name="topicInput" id="anotherTopicInput" placeholder="Enter topic">
+				<input type="submit" name="submitButton" id="anotherTopicSubmit" value="Build Another Collage">
+			</form>
+      <button id="exportCollage" onclick=""> <!-- specify action -->
+        Export Collage
+      </button>
+		</div>
+	</body>
+</html>
