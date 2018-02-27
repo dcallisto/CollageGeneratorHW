@@ -53,3 +53,21 @@ div#container {
   background-color: #404040;
   color: white;
 }
+
+#previousCollages {
+	margin-top: 25px;
+	background-color: #404040;
+	width: 60%;
+	height: 100px;
+  overflow: auto;
+  white-space: nowrap;
+}
+
+.miniCollage {
+	width: 75px;
+	height: 75px;
+	padding-top: 12.5px;
+	padding-left: 12.5px;
+	display: inline;
+	margin: 0 auto;
+}
