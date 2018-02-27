@@ -4,8 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
-import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 
 /**
@@ -24,8 +24,6 @@ import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
-import org.imgscalr.AsyncScalr;
-import org.imgscalr.Main;
 import org.imgscalr.Scalr;
 import org.imgscalr.Scalr.Rotation;
 
@@ -33,44 +31,41 @@ import gimages.GoogleImageDataContainer;
 
 public class ImageTools {
 	
-	int width;
-	int height;
+	static int width;
+	//NEEDS TO BE ASSIGNED
+	static int height;
+	//NEEDS TO BE ASSIGNED
 	
-	public ImageTools(int width, int height) {
-		this.width = width;
-		this.height = height;
-	}
-	
-	public Collection<BufferedImage> convertToBufferedImageFromGoogleImageDataContainer(Collection<GoogleImageDataContainer> collection){
+	public static Collection<BufferedImage> convertToBufferedImageFromGoogleImageDataContainer(Collection<GoogleImageDataContainer> collection){
 		Collection<BufferedImage> results = new ArrayList<BufferedImage>();
 		for(GoogleImageDataContainer gidc:collection)
 			try {
-				results.add(ImageIO.read(new File(gidc.getUrl())));
+				results.add(ImageIO.read(new URL(gidc.getUrl())));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		return results;
 	}
 	
-	public Collection<BufferedImage> rotateImages(Collection<BufferedImage> collection){
+	public static Collection<BufferedImage> rotateImages(Collection<BufferedImage> collection){
 		for(BufferedImage bi: collection)
 			Scalr.rotate(bi, Rotation.valueOf(Double.toString(Math.random()*90-45)), (BufferedImageOp[])null);
 		return collection;
 	}
 	
-	public Collection<BufferedImage> resizeImages(Collection<BufferedImage> collection){
+	public static Collection<BufferedImage> resizeImages(Collection<BufferedImage> collection){
 		for(BufferedImage bi: collection)
 			Scalr.resize(bi, width, height, (BufferedImageOp[])null);
 		return collection;
 	}
 	
-	public Collection<BufferedImage> translateImages(Collection<BufferedImage> collection){
+	public static Collection<BufferedImage> translateImages(Collection<BufferedImage> collection){
 		for(BufferedImage bi: collection)
 			Scalr.apply(bi, (BufferedImageOp[])null);
 		return collection;
 	}
 	
-	public Collection<BufferedImage> addBorder(Collection<BufferedImage> collection){
+	public static Collection<BufferedImage> addBorder(Collection<BufferedImage> collection){
 		JPanel gui = new JPanel(new BorderLayout());
         	// to contrast the 'picture frame' border created below
         	gui.setBorder(new LineBorder(Color.WHITE, 8));

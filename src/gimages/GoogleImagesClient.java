@@ -35,7 +35,7 @@ public class GoogleImagesClient
 	private String cseId;
 	private String apiKey;
 
-	protected static class NoCseIdException extends RuntimeException
+	public static class NoCseIdException extends RuntimeException
 	{
 		private static final long serialVersionUID = -3173644237979556821L;
 
@@ -45,7 +45,7 @@ public class GoogleImagesClient
 		}
 	}
 
-	protected static class NoApiKeyException extends RuntimeException
+	public static class NoApiKeyException extends RuntimeException
 	{
 		private static final long serialVersionUID = 2618088795834573589L;
 
@@ -55,7 +55,7 @@ public class GoogleImagesClient
 		}
 	}
 
-	protected static class EmptyQueryException extends RuntimeException
+	public static class EmptyQueryException extends RuntimeException
 	{
 		private static final long serialVersionUID = -5086294946483449728L;
 
@@ -65,7 +65,7 @@ public class GoogleImagesClient
 		}
 	}
 
-	protected static class InsufficientImageItemsException extends RuntimeException
+	public static class InsufficientImageItemsException extends RuntimeException
 	{
 		private static final long serialVersionUID = 687842118573385020L;
 
@@ -75,7 +75,7 @@ public class GoogleImagesClient
 		}
 	}
 
-	protected static class SearchFailureException extends RuntimeException
+	public static class SearchFailureException extends RuntimeException
 	{
 		private static final long serialVersionUID = -8159817905625855197L;
 
@@ -109,8 +109,7 @@ public class GoogleImagesClient
 		return getFirstNImages(query, n, options);
 	}
 
-	public Collection<GoogleImageDataContainer> getFirstNImages (String query, final Integer n,
-	        GoogleImagesSearchOptions options)
+	public Collection<GoogleImageDataContainer> getFirstNImages (String query, final Integer n, GoogleImagesSearchOptions options)
 	{
 		assert (n > 0);
 		JsonObject searchResponse = searchImages(query, options);
