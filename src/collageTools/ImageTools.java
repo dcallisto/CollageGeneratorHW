@@ -4,13 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
 
 import java.util.Collection;
 
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -20,7 +16,6 @@ import javax.swing.border.LineBorder;
 import org.imgscalr.Scalr;
 import org.imgscalr.Scalr.Rotation;
 
-import gimages.GoogleImageDataContainer;
 
 /**
  * Code to add borders, rotate pictures, and edit the locations.
@@ -29,27 +24,10 @@ import gimages.GoogleImageDataContainer;
  */
 public class ImageTools
 {
-
 	static int width;
 	// NEEDS TO BE ASSIGNED
 	static int height;
 	// NEEDS TO BE ASSIGNED
-
-	public static Collection<BufferedImage> convertToBufferedImageFromGoogleImageDataContainer (
-	        Collection<GoogleImageDataContainer> collection)
-	{
-		Collection<BufferedImage> results = new ArrayList<BufferedImage>();
-		for (GoogleImageDataContainer gidc : collection) {
-			try {
-				BufferedImage bimg = ImageIO.read(new URL(gidc.getUrl()));
- 				results.add(bimg);
-			}
-			catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		return results;
-	}
 
 	public static Collection<BufferedImage> rotateImages (Collection<BufferedImage> collection)
 	{
@@ -78,7 +56,10 @@ public class ImageTools
 		// to contrast the 'picture frame' border created below
 		gui.setBorder(new LineBorder(Color.WHITE, 8));
 		for (BufferedImage bi : collection) {
-			JLabel l = new JLabel(new ImageIcon(bi));
+			// System.out.println(bi);
+			ImageIcon imageIcon = new ImageIcon(bi);
+			// System.out.println(imageIcon);
+			JLabel l = new JLabel(imageIcon);
 			Border b = new LineBorder(Color.WHITE, 8);
 			l.setBorder(b);
 			gui.add(l);

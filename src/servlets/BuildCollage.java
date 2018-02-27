@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,7 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 
 import collageTools.CollageGenerator;
-import collageTools.ImageTools;
 import objects.Collage;
 import gimages.GoogleImagesClient;
 import gimages.GoogleImagesClient.EmptyQueryException;
@@ -23,11 +23,10 @@ import gimages.GoogleImagesClient.NoApiKeyException;
 import gimages.GoogleImagesClient.NoCseIdException;
 import gimages.GoogleImageDataContainer;
 
-
 /**
  * Servlet implementation class BuildCollageServlet
  * 
- * @author 
+ * @author
  */
 @WebServlet("/BuildCollage")
 public class BuildCollage extends HttpServlet
@@ -41,9 +40,9 @@ public class BuildCollage extends HttpServlet
 	private static String getCollageAsJson (String topic)
 	{
 		// Get 30 images from Google Images
-		ArrayList<GoogleImageDataContainer> imgData = new ArrayList<>();
+		Collection<GoogleImageDataContainer> imageDataContainers = null;
 		try {
-			imgData.addAll(new GoogleImagesClient(cseId, apiKey).getFirstNImages(topic, maxNumImages));
+			imageDataContainers = new GoogleImagesClient(cseId, apiKey).getFirstNImages(topic, maxNumImages);
 		}
 		catch (NoCseIdException ncie) {
 			ncie.printStackTrace();
@@ -56,14 +55,15 @@ public class BuildCollage extends HttpServlet
 		}
 
 		// XXX
-		System.out.println(imgData.size());
+		System.out.println(imageDataContainers.size());
 
 		String collageAsJson;
-		if (imgData.size() == maxNumImages) {
-			Collection<BufferedImage> images = ImageTools.convertToBufferedImageFromGoogleImageDataContainer(imgData);
+		if (imageDataContainers.size() == maxNumImages) {
+			Collection<BufferedImage> bufferedImages = imageDataContainers.stream()
+			        .map(GoogleImageDataContainer::getBufferedImage).collect(Collectors.toCollection(ArrayList::new));
 
 			// Turn the 30 images into a collage
-			Collage col = CollageGenerator.generateCollage(images, topic);
+			Collage col = CollageGenerator.generateCollage(bufferedImages, topic);
 
 			// Serialize collage data into JSON
 			collageAsJson = gson.toJson(col);

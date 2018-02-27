@@ -18,10 +18,10 @@ public class UsageExample
 			Collection<GoogleImageDataContainer> imgData = giClient.getFirstNImages("floweriza", 30);
 			for (GoogleImageDataContainer img : imgData) {
 				System.out.println(String.format(
-				        "Type: %s\nDimensions: %s x %s\nSize (in bytes): %s\nUrl: %s\nThumbnail Url: %s\nThumbnail Dimensions: %s x %s\nDescription: %s\n\n",
+				        "Type: %s\nDimensions: %s x %s\nSize (in bytes): %s\nUrl: %s\nThumbnail Url: %s\nThumbnail Dimensions: %s x %s\nDescription: %s\nBuffered Image: %s\n",
 				        img.getType(), img.getWidth(), img.getHeight(), img.getSize(), img.getUrl(),
-				        img.getThumbnailUrl(), img.getThumbnailWidth(), img.getThumbnailHeight(),
-				        img.getDescription()));
+				        img.getThumbnailUrl(), img.getThumbnailWidth(), img.getThumbnailHeight(), img.getDescription(),
+				        img.getBufferedImage()));
 			}
 		}
 		catch (NoCseIdException ncie) {

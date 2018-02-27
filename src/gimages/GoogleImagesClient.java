@@ -1,5 +1,6 @@
 package gimages;
 
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -12,6 +13,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.imageio.ImageIO;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -106,7 +109,8 @@ public class GoogleImagesClient
 		return getFirstNImages(query, n, options);
 	}
 
-	public Collection<GoogleImageDataContainer> getFirstNImages (String query, final Integer n, GoogleImagesSearchOptions options)
+	public Collection<GoogleImageDataContainer> getFirstNImages (String query, final Integer n,
+	        GoogleImagesSearchOptions options)
 	{
 		assert (n > 0);
 		JsonObject searchResponse = searchImages(query, options);
@@ -129,9 +133,6 @@ public class GoogleImagesClient
 		// having enough images implies there are the attributes "items"
 		assert (searchResponse.has("items"));
 
-		// Store the first `n` images in a JsonArray
-		JsonArray imageItems = new JsonArray();
-
 		// Initialize values -- query options need to be updated each iteration of the
 		// loop to reflect an increment in search results pagination
 		JsonArray currentImageItems;
@@ -139,23 +140,61 @@ public class GoogleImagesClient
 		Long nextStartingIndex;
 		GoogleImagesSearchOptions nextPageSearchOptions;
 
-		// Adding `n` items into `imageItems`
-		// Each item in `imageItems` is of type JsonElement
+		// Initialize values -- convert JsonArray to
+		// Collection<GoogleImageDataContainer>
+		Collection<GoogleImageDataContainer> imageDataContainers = new ArrayList<>();
+		JsonObject imageMetadataObject, imageObject;
+		GoogleImageDataContainer imageDataContainer;
+		BufferedImage bufferedImage = null;
+		String imageType, imageUrl, imageThumbnailUrl, imageDescription;
+		Integer imageWidth, imageHeight, imageSize, imageThumbnailWidth, imageThumbnailHeight;
+
+		Boolean sufficientImages = false;
 		while (true) {
 			currentImageItems = searchResponse.getAsJsonArray("items");
-			if (imageItems.size() + currentImageItems.size() > n) {
-				// add to all the image items with slow loop
-				for (int i = 0; i < n - imageItems.size(); i++) {
-					imageItems.add(currentImageItems.get(i));
+			for (JsonElement imageItem : currentImageItems) {
+				// first check if we can even get the buffered image from the URL
+				imageMetadataObject = imageItem.getAsJsonObject();
+				imageObject = imageMetadataObject.get("image").getAsJsonObject();
+				imageUrl = imageMetadataObject.get("link").getAsString();
+				try {
+					bufferedImage = ImageIO.read(new URL(imageUrl));
 				}
-			}
-			else {
-				// else, just add everything conveniently
-				imageItems.addAll(currentImageItems);
+				catch (IOException ioe) {
+					bufferedImage = null;
+				}
+				finally {
+					if (bufferedImage == null) continue;
+				}
+				
+				// build the data containers
+				imageType = imageMetadataObject.get("mime").getAsString();
+				imageWidth = imageObject.get("width").getAsInt();
+				imageHeight = imageObject.get("height").getAsInt();
+				imageSize = imageObject.get("byteSize").getAsInt();
+				imageUrl = imageMetadataObject.get("link").getAsString();
+				imageThumbnailUrl = imageObject.get("thumbnailLink").getAsString();
+				imageThumbnailWidth = imageObject.get("thumbnailWidth").getAsInt();
+				imageThumbnailHeight = imageObject.get("thumbnailHeight").getAsInt();
+				imageDescription = imageMetadataObject.get("snippet").getAsString();
+
+				// build the container
+				imageDataContainer = new GoogleImageDataContainerBuilder().type(imageType).width(imageWidth)
+				        .height(imageHeight).size(imageSize).url(imageUrl).thumbnailUrl(imageThumbnailUrl)
+				        .thumbnailWidth(imageThumbnailWidth).thumbnailHeight(imageThumbnailHeight)
+				        .description(imageDescription).bufferedImage(bufferedImage).build();
+				// add to collection for easy java data consumption
+				imageDataContainers.add(imageDataContainer);
+
+				sufficientImages = imageDataContainers.size() >= n;
+				if (sufficientImages) break;
 			}
 
+			// break from outer while loop if there are enough images
+			if (sufficientImages) break;
+
 			// break if there are enough images
-			if (imageItems.size() >= n) break;
+			if (imageDataContainers.size() >= n) break;
 
 			// search with option to specify starting index
 			nextPageData = queriesData.getAsJsonArray("nextPage").get(0).getAsJsonObject();
@@ -164,34 +203,6 @@ public class GoogleImagesClient
 			// update response and queries data
 			searchResponse = searchImages(query, nextPageSearchOptions);
 			queriesData = searchResponse.getAsJsonObject("queries");
-		}
-
-		// Convert JsonArray to Collection<GoogleImageDataContainer>
-		Collection<GoogleImageDataContainer> imageDataContainers = new ArrayList<>();
-		JsonObject imageDataObject, img;
-		GoogleImageDataContainer imageDataContainer;
-		String imageType, imageUrl, imageThumbnailUrl, imageDescription;
-		Integer imageWidth, imageHeight, imageSize, imageThumbnailWidth, imageThumbnailHeight;
-		for (JsonElement imageItem : imageItems) {
-			imageDataObject = imageItem.getAsJsonObject();
-			img = imageDataObject.get("image").getAsJsonObject();
-			imageType = imageDataObject.get("mime").getAsString();
-			imageWidth = img.get("width").getAsInt();
-			imageHeight = img.get("height").getAsInt();
-			imageSize = img.get("byteSize").getAsInt();
-			imageUrl = imageDataObject.get("link").getAsString();
-			imageThumbnailUrl = img.get("thumbnailLink").getAsString();
-			imageThumbnailWidth = img.get("thumbnailWidth").getAsInt();
-			imageThumbnailHeight = img.get("thumbnailHeight").getAsInt();
-			imageDescription = imageDataObject.get("snippet").getAsString();
-
-			// build the container
-			imageDataContainer = new GoogleImageDataContainerBuilder().type(imageType).width(imageWidth)
-			        .height(imageHeight).size(imageSize).url(imageUrl).thumbnailUrl(imageThumbnailUrl)
-			        .thumbnailWidth(imageThumbnailWidth).thumbnailHeight(imageThumbnailHeight)
-			        .description(imageDescription).build();
-			// add to collection for easy java data consumption
-			imageDataContainers.add(imageDataContainer);
 		}
 
 		// this must be held true

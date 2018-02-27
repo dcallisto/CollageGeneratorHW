@@ -1,5 +1,7 @@
 package gimages;
 
+import java.awt.image.BufferedImage;
+
 /**
  * 
  * @author Eddo W. Hintoso
@@ -16,9 +18,10 @@ public class GoogleImageDataContainer
 	private Integer thumbnailHeight;
 	private String description;
 	private String parentPage;
+	private BufferedImage bufferedImage;
 
 	GoogleImageDataContainer(String type, Integer width, Integer height, Integer size, String url, String thumbnailUrl,
-	        Integer thumbnailWidth, Integer thumbnailHeight, String description, String parentPage)
+	        Integer thumbnailWidth, Integer thumbnailHeight, String description, String parentPage, BufferedImage bufferedImage)
 	{
 		this.type = type;
 		this.width = width;
@@ -30,6 +33,7 @@ public class GoogleImageDataContainer
 		this.thumbnailHeight = thumbnailHeight;
 		this.description = description;
 		this.parentPage = parentPage;
+		this.bufferedImage = bufferedImage;
 	}
 
 	public String getType ()
@@ -81,6 +85,11 @@ public class GoogleImageDataContainer
 	{
 		return parentPage;
 	}
+	
+	public BufferedImage getBufferedImage ()
+	{
+		return bufferedImage;
+	}
 
 	public static class GoogleImageDataContainerBuilder
 	{
@@ -94,6 +103,7 @@ public class GoogleImageDataContainer
 		private Integer thumbnailHeight;
 		private String description;
 		private String parentPage;
+		private BufferedImage bufferedImage;
 
 		GoogleImageDataContainerBuilder()
 		{
@@ -158,11 +168,17 @@ public class GoogleImageDataContainer
 			this.parentPage = parentPage;
 			return this;
 		}
+		
+		public GoogleImageDataContainerBuilder bufferedImage (BufferedImage bufferedImage)
+		{
+			this.bufferedImage = bufferedImage;
+			return this;
+		}
 
 		public GoogleImageDataContainer build ()
 		{
 			return new GoogleImageDataContainer(type, width, height, size, url, thumbnailUrl, thumbnailWidth,
-			        thumbnailHeight, description, parentPage);
+			        thumbnailHeight, description, parentPage, bufferedImage);
 		}
 	}
 }
