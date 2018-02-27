@@ -4,8 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
-import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 
 /**
@@ -40,7 +40,7 @@ public class ImageTools {
 		Collection<BufferedImage> results = new ArrayList<BufferedImage>();
 		for(GoogleImageDataContainer gidc:collection)
 			try {
-				results.add(ImageIO.read(new File(gidc.getUrl())));
+				results.add(ImageIO.read(new URL(gidc.getUrl())));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

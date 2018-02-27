@@ -50,14 +50,16 @@ public class CollageGenerator {
 	
 	private static BufferedImage findBackground(Collection<BufferedImage> collection) {
 		final double idealRatio = 1200.0 / 900;
-
+		
 		double minDiff = Double.MAX_VALUE;
 		BufferedImage backgroundImage = null;
 		
 		for(BufferedImage currImg:collection) {
+			if(currImg == null)
+				continue;
 			double imgRatio = currImg.getWidth() / currImg.getHeight();
 			double diff = Math.abs(imgRatio - idealRatio);
-			if (diff<minDiff) {
+			if (diff < minDiff) {
 				minDiff = diff;
 				backgroundImage = currImg;
 			}
