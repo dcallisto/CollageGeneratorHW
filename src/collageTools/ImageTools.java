@@ -33,15 +33,12 @@ import gimages.GoogleImageDataContainer;
 
 public class ImageTools {
 	
-	int width;
-	int height;
+	static int width;
+	//NEEDS TO BE ASSIGNED
+	static int height;
+	//NEEDS TO BE ASSIGNED
 	
-	public ImageTools(int width, int height) {
-		this.width = width;
-		this.height = height;
-	}
-	
-	public Collection<BufferedImage> convertToBufferedImageFromGoogleImageDataContainer(Collection<GoogleImageDataContainer> collection){
+	public static Collection<BufferedImage> convertToBufferedImageFromGoogleImageDataContainer(Collection<GoogleImageDataContainer> collection){
 		Collection<BufferedImage> results = new ArrayList<BufferedImage>();
 		for(GoogleImageDataContainer gidc:collection)
 			try {
@@ -52,25 +49,25 @@ public class ImageTools {
 		return results;
 	}
 	
-	public Collection<BufferedImage> rotateImages(Collection<BufferedImage> collection){
+	public static Collection<BufferedImage> rotateImages(Collection<BufferedImage> collection){
 		for(BufferedImage bi: collection)
 			Scalr.rotate(bi, Rotation.valueOf(Double.toString(Math.random()*90-45)), (BufferedImageOp[])null);
 		return collection;
 	}
 	
-	public Collection<BufferedImage> resizeImages(Collection<BufferedImage> collection){
+	public static Collection<BufferedImage> resizeImages(Collection<BufferedImage> collection){
 		for(BufferedImage bi: collection)
 			Scalr.resize(bi, width, height, (BufferedImageOp[])null);
 		return collection;
 	}
 	
-	public Collection<BufferedImage> translateImages(Collection<BufferedImage> collection){
+	public static Collection<BufferedImage> translateImages(Collection<BufferedImage> collection){
 		for(BufferedImage bi: collection)
 			Scalr.apply(bi, (BufferedImageOp[])null);
 		return collection;
 	}
 	
-	public Collection<BufferedImage> addBorder(Collection<BufferedImage> collection){
+	public static Collection<BufferedImage> addBorder(Collection<BufferedImage> collection){
 		JPanel gui = new JPanel(new BorderLayout());
         	// to contrast the 'picture frame' border created below
         	gui.setBorder(new LineBorder(Color.WHITE, 8));

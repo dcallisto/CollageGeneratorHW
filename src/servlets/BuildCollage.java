@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
@@ -16,10 +17,13 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 
 import collageTools.CollageGenerator;
+import collageTools.ImageTools;
 import objects.Collage;
 import gimages.GoogleImagesClient;
+import gimages.GoogleImagesClient.EmptyQueryException;
+import gimages.GoogleImagesClient.NoApiKeyException;
+import gimages.GoogleImagesClient.NoCseIdException;
 import gimages.GoogleImageDataContainer;
-
 /**
  * Servlet implementation class BuildCollageServlet
  */
@@ -51,13 +55,7 @@ public class BuildCollage extends HttpServlet {
 		}
 		
 		if (imgData.size() == 30) {
-			// We have 30 images as URLs from the internet, we need to download all of them as buffered images
-			BufferedImage images[] = new BufferedImage[30];
-			for (int i = 0; i < 30; ++i) {
-				GoogleImageDataContainer currImg = imgData.get(i);
-				URL url = new URL(currImg.getUrl());
-				images[i] = ImageIO.read(url);
-			}
+			Collection<BufferedImage> images = ImageTools.convertToBufferedImageFromGoogleImageDataContainer(imgData);
 			
 			// Turn the 30 images into a collage
 			Collage col = CollageGenerator.generateCollage(images, topic);

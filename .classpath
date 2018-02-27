@@ -13,5 +13,7 @@
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="lib" path="/Users/noahmitsuhashi/Downloads/jars/gson-2.8.0.jar"/>
 	<classpathentry kind="lib" path="/Users/noahmitsuhashi/Downloads/imgscalr-lib-4.2.jar"/>
+	<classpathentry kind="lib" path="/Users/noahmitsuhashi/Downloads/javatuples-1.1.jar"/>
+	<classpathentry kind="lib" path="/Users/noahmitsuhashi/Downloads/servlet-api.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
