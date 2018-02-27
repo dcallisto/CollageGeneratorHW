@@ -17,10 +17,10 @@ public class CollageGenerator {
 	public static Collage generateCollage(Collection<BufferedImage> collection, String topic) {
 		
 		BufferedImage backgroundImg = findBackground(collection);
-		
+
 		final int COLLAGE_WIDTH = backgroundImg.getWidth() + 6;
 		final int COLLAGE_HEIGHT = backgroundImg.getHeight() + 6;
-		
+
 		BufferedImage collage = new BufferedImage(COLLAGE_WIDTH,COLLAGE_HEIGHT,BufferedImage.TYPE_INT_RGB);
 		Graphics2D collageGraphics = collage.createGraphics();
 		
@@ -32,6 +32,15 @@ public class CollageGenerator {
 		
 		// Stick the base background image (to fill up the entire collage space) in the canvas
 		collageGraphics.drawImage(backgroundImg, 3, 3, null);
+		
+		ImageTools.addBorder(collection);
+		ImageTools.rotateImages(collection);
+		ImageTools.resizeImages(collection);
+		ImageTools.translateImages(collection);
+		
+		for(BufferedImage image: collection) {
+			collageGraphics.drawImage(image, 3, 3, null);
+		}
 		
 		collageGraphics.dispose();
 		
