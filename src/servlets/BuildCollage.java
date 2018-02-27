@@ -22,25 +22,28 @@ import gimages.GoogleImagesClient.EmptyQueryException;
 import gimages.GoogleImagesClient.NoApiKeyException;
 import gimages.GoogleImagesClient.NoCseIdException;
 import gimages.GoogleImageDataContainer;
+
+
 /**
  * Servlet implementation class BuildCollageServlet
+ * 
+ * @author 
  */
 @WebServlet("/BuildCollage")
-public class BuildCollage extends HttpServlet {
-
+public class BuildCollage extends HttpServlet
+{
 	private static final long serialVersionUID = 1L;
+	private static final int maxNumImages = 30;
+	private static final String cseId = "015959703164177076712:ybjv_gscpea";
+	private static final String apiKey = "AIzaSyBr1C_5QJoGUgpFdRO9zitv8LZd_dbQb0c";
+	private static final Gson gson = new Gson();
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String topic = request.getParameter("topic");
-
-		ArrayList<GoogleImageDataContainer> imgData = new ArrayList<GoogleImageDataContainer>();
-
+	private static String getCollageAsJson (String topic)
+	{
 		// Get 30 images from Google Images
+		ArrayList<GoogleImageDataContainer> imgData = new ArrayList<>();
 		try {
-			imgData = (ArrayList<GoogleImageDataContainer>)(new GoogleImagesClient("", "")).getFirstNImages(topic, 30);
+			imgData.addAll(new GoogleImagesClient(cseId, apiKey).getFirstNImages(topic, maxNumImages));
 		}
 		catch (NoCseIdException ncie) {
 			ncie.printStackTrace();
@@ -52,79 +55,50 @@ public class BuildCollage extends HttpServlet {
 			eqe.printStackTrace();
 		}
 
+		// XXX
 		System.out.println(imgData.size());
 
-		if (imgData.size() == 30) {
+		String collageAsJson;
+		if (imgData.size() == maxNumImages) {
 			Collection<BufferedImage> images = ImageTools.convertToBufferedImageFromGoogleImageDataContainer(imgData);
 
 			// Turn the 30 images into a collage
 			Collage col = CollageGenerator.generateCollage(images, topic);
 
 			// Serialize collage data into JSON
-			Gson gson = new Gson();
-			String collageAsJson = gson.toJson(col);
+			collageAsJson = gson.toJson(col);
 
+			// XXX
 			System.out.println(col.getImageFilePath());
-
-			// Send the JSON string back to the client
-			PrintWriter out = response.getWriter();
-			out.println(collageAsJson);
 		}
 		else {
 			// We couldn't get 30 images with the query, send back an error to the client
 			Collage error = new Collage("", 0, 0, topic, true);
-			Gson gson = new Gson();
-			String collageAsJson = gson.toJson(error);
-
-			// Send the JSON string back to the client
-			PrintWriter out = response.getWriter();
-			out.println(collageAsJson);
+			collageAsJson = gson.toJson(error);
 		}
+
+		return collageAsJson;
 	}
 
-	public static void main(String[] args) {
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void service (HttpServletRequest request, HttpServletResponse response)
+	        throws ServletException, IOException
+	{
+		String topic = request.getParameter("topic");
+		String collageAsJson = getCollageAsJson(topic);
+
+		// Send the JSON string back to the client
+		PrintWriter out = response.getWriter();
+		out.println(collageAsJson);
+	}
+
+	public static void main (String[] args)
+	{
 		String topic = "dogs";
-
-		ArrayList<GoogleImageDataContainer> imgData = new ArrayList<GoogleImageDataContainer>();
-
-		// Get 30 images from Google Images
-		try {
-			imgData = (ArrayList<GoogleImageDataContainer>)(new GoogleImagesClient("", "")).getFirstNImages(topic, 30);
-		}
-		catch (NoCseIdException ncie) {
-			ncie.printStackTrace();
-		}
-		catch (NoApiKeyException nake) {
-			nake.printStackTrace();
-		}
-		catch (EmptyQueryException eqe) {
-			eqe.printStackTrace();
-		}
-
-
-		if (imgData.size() == 30) {
-			Collection<BufferedImage> images = ImageTools.convertToBufferedImageFromGoogleImageDataContainer(imgData);
-
-			// Turn the 30 images into a collage
-			Collage col = CollageGenerator.generateCollage(images, topic);
-
-			// Serialize collage data into JSON
-			Gson gson = new Gson();
-			String collageAsJson = gson.toJson(col);
-
-			System.out.println(col.getImageFilePath());
-
-			// Send the JSON string back to the client
-			System.out.println(collageAsJson);
-		}
-		else {
-			// We couldn't get 30 images with the query, send back an error to the client
-			Collage error = new Collage("", 0, 0, topic, true);
-			Gson gson = new Gson();
-			String collageAsJson = gson.toJson(error);
-
-			// Send the JSON string back to the client
-			System.out.println(collageAsJson);
-		}
+		String collageAsJson = getCollageAsJson(topic);
+		System.out.println(collageAsJson);
 	}
 }
