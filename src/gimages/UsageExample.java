@@ -11,7 +11,9 @@ public class UsageExample
 	public static void main (String[] args)
 	{
 		try {
-			GoogleImagesClient giClient = new GoogleImagesClient("", "");
+			String cseId = "015959703164177076712:ybjv_gscpea";
+			String apiKey = "AIzaSyBr1C_5QJoGUgpFdRO9zitv8LZd_dbQb0c";
+			GoogleImagesClient giClient = new GoogleImagesClient(cseId, apiKey);
 
 			Collection<GoogleImageDataContainer> imgData = giClient.getFirstNImages("floweriza", 30);
 			for (GoogleImageDataContainer img : imgData) {

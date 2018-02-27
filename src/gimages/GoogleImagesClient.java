@@ -87,9 +87,6 @@ public class GoogleImagesClient
 
 	public GoogleImagesClient(String cseId, String apiKey)
 	{
-		// XXX
-		cseId = "015959703164177076712:ybjv_gscpea";
-		apiKey = "AIzaSyBr1C_5QJoGUgpFdRO9zitv8LZd_dbQb0c";
 
 		if (cseId == null || cseId.isEmpty()) {
 			throw new NoCseIdException("Expected a Custom Search Engine ID.");
