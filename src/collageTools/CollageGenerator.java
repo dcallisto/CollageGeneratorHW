@@ -5,51 +5,23 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 
 import javax.imageio.ImageIO;
 
-import org.javatuples.Pair;
 
-import objects.Collage;
+import objects.Collage; 
 
 public class CollageGenerator {
 	
 	public static Collage generateCollage(Collection<BufferedImage> collection, String topic) {
-		final double idealRatio = 1200.0 / 900;
-		ArrayList<Pair<Integer, Double>> ratios = new ArrayList<>(30);
 		
-		BufferedImage[] images = (BufferedImage[])collection.toArray();
-		for (int i = 0; i < images.length; ++i) {
-			BufferedImage currImg = images[i];
-			double imgWidth = currImg.getWidth();
-			double imgHeight = currImg.getHeight();
-			double imgRatio = imgWidth / imgHeight;
-			double diff = Math.abs(imgRatio - idealRatio);
-			
-			Pair<Integer, Double> indexAndDiff = new Pair<>(i, diff);
-			ratios.set(i, indexAndDiff);
-		}
-		
-		//Sort on custom anonymous comparator
-		Collections.sort(ratios, new Comparator<Pair<Integer, Double>>() {
-			public int compare(Pair<Integer, Double> pair1, Pair<Integer, Double> pair2) {
-				return pair1.getValue1().compareTo(pair2.getValue1());
-			}
-		});
-		
-		int baseImgIndex = ratios.get(0).getValue0();
-		BufferedImage backgroundImg = images[baseImgIndex];
+		BufferedImage backgroundImg = findBackground(collection);
 		
 		final int COLLAGE_WIDTH = backgroundImg.getWidth() + 6;
 		final int COLLAGE_HEIGHT = backgroundImg.getHeight() + 6;
 		
-		BufferedImage collage = new BufferedImage(COLLAGE_WIDTH,
-												  COLLAGE_HEIGHT,
-												  BufferedImage.TYPE_INT_RGB);
+		BufferedImage collage = new BufferedImage(COLLAGE_WIDTH,COLLAGE_HEIGHT,BufferedImage.TYPE_INT_RGB);
 		Graphics2D collageGraphics = collage.createGraphics();
 		
 		// Fill background of the collage with a white color
@@ -74,6 +46,25 @@ public class CollageGenerator {
 		}
 		
 		return new Collage(filePath, COLLAGE_HEIGHT, COLLAGE_WIDTH, topic, false);
+	}
+	
+	private static BufferedImage findBackground(Collection<BufferedImage> collection) {
+		final double idealRatio = 1200.0 / 900;
+
+		double minDiff = Double.MAX_VALUE;
+		BufferedImage backgroundImage = null;
+		
+		for(BufferedImage currImg:collection) {
+			double imgRatio = currImg.getWidth() / currImg.getHeight();
+			double diff = Math.abs(imgRatio - idealRatio);
+			if (diff<minDiff) {
+				minDiff = diff;
+				backgroundImage = currImg;
+			}
+			
+		}
+		
+		return backgroundImage;
 	}
 	
 }

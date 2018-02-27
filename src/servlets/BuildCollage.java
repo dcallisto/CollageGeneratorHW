@@ -3,11 +3,9 @@ package servlets;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -53,6 +51,8 @@ public class BuildCollage extends HttpServlet {
 		catch (EmptyQueryException eqe) {
 			eqe.printStackTrace();
 		}
+		
+		System.out.println(imgData.size());
 		
 		if (imgData.size() == 30) {
 			Collection<BufferedImage> images = ImageTools.convertToBufferedImageFromGoogleImageDataContainer(imgData);

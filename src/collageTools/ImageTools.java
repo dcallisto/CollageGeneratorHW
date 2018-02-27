@@ -24,8 +24,6 @@ import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
-import org.imgscalr.AsyncScalr;
-import org.imgscalr.Main;
 import org.imgscalr.Scalr;
 import org.imgscalr.Scalr.Rotation;
 

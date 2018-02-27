@@ -109,8 +109,7 @@ public class GoogleImagesClient
 		return getFirstNImages(query, n, options);
 	}
 
-	public Collection<GoogleImageDataContainer> getFirstNImages (String query, final Integer n,
-	        GoogleImagesSearchOptions options)
+	public Collection<GoogleImageDataContainer> getFirstNImages (String query, final Integer n, GoogleImagesSearchOptions options)
 	{
 		assert (n > 0);
 		JsonObject searchResponse = searchImages(query, options);
