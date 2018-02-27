@@ -1,4 +1,4 @@
-package collagebuilder;
+package collageTools;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -10,6 +10,8 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import javax.imageio.ImageIO;
+
+import objects.Collage;
 
 import javafx.util.Pair;
 

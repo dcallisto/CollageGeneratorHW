@@ -1,4 +1,4 @@
-package collagebuilder;
+package servlets;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -15,15 +15,16 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 
-import collagebuilder.GoogleImagesClient.EmptyQueryException;
-import collagebuilder.GoogleImagesClient.NoApiKeyException;
-import collagebuilder.GoogleImagesClient.NoCseIdException;
+import collageTools.CollageGenerator;
+import objects.Collage;
+import gimages.GoogleImagesClient;
+import gimages.GoogleImageDataContainer;
 
 /**
  * Servlet implementation class BuildCollageServlet
  */
-@WebServlet("/BuildCollageServlet")
-public class BuildCollageServlet extends HttpServlet {
+@WebServlet("/BuildCollage")
+public class BuildCollage extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -37,16 +38,7 @@ public class BuildCollageServlet extends HttpServlet {
 		
 		// Get 30 images from Google Images
 		try {
-			GoogleImagesClient giClient = new GoogleImagesClient("", "");
-
-			imgData = (ArrayList<GoogleImageDataContainer>)giClient.getFirstNImages(topic, 30);
-//			for (GoogleImageDataContainer img : imgData) {
-//				System.out.println(String.format(
-//				        "Type: %s\nDimensions: %s x %s\nSize (in bytes): %s\nUrl: %s\nThumbnail Url: %s\nThumbnail Dimensions: %s x %s\nDescription: %s\n\n",
-//				        img.getType(), img.getWidth(), img.getHeight(), img.getSize(), img.getUrl(),
-//				        img.getThumbnailUrl(), img.getThumbnailWidth(), img.getThumbnailHeight(),
-//				        img.getDescription()));
-//			}
+			imgData = (ArrayList<GoogleImageDataContainer>)(new GoogleImagesClient("", "")).getFirstNImages(topic, 30);
 		}
 		catch (NoCseIdException ncie) {
 			ncie.printStackTrace();

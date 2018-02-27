@@ -1,4 +1,4 @@
-package collagebuilder;
+package objects;
 
 import java.io.Serializable;
 
