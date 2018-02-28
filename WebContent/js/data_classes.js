@@ -13,7 +13,7 @@ class Collage {
 }
 
 // Class representing the full list of generated collages
-// Contains an arrau of Collage objects
+// Contains an array of Collage objects
 // Contains convenience methods for getting previous collages and
 // displaying collages.
 class CollageList {
@@ -22,14 +22,14 @@ class CollageList {
 		this.collages = [];
 		this.currentCollage = 0;
 	}
-	
+
 	// Adds a new collage to the collage list.
 	// Pass in a Collage object.
 	addCollage(collage) {
 		this.collages.push(collage);
 		this.currentCollage = collages.length;
 	}
-	
+
 	// Returns an array of previous collages.
 	// Excludes the currently-displayed collage.
 	getPrevCollages() {
@@ -42,12 +42,12 @@ class CollageList {
 		}
 		return collages;
 	}
-	
+
 	// Returns the collage with the specified collage number.
 	getCollage(collageNum) {
 		return collages[collageNum - 1];
 	}
-	
+
 	// Returns the previous collage with the specified collage number.
 	getPrevCollage(collageNum) {
 		var prevCollages = this.getPrevCollages();
